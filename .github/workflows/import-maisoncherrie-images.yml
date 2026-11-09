@@ -1,0 +1,44 @@
+name: Import MaisonCherrie November image assets
+on:
+  push:
+    paths:
+      - '.github/workflows/import-maisoncherrie-images.yml'
+permissions:
+  contents: write
+jobs:
+  import-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download and verify nine original PNG images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p maisoncherrie/2026-11
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/7ugShwNEYx5DVSGo' -o "maisoncherrie/2026-11/2026-11-05_01.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-05_01.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/4pRS7cx9vTn2Icbj' -o "maisoncherrie/2026-11/2026-11-05_02.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-05_02.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/nYf1fC0nQzyTxgDj' -o "maisoncherrie/2026-11/2026-11-05_03.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-05_03.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/q6k0gM7L2rn7S6dG' -o "maisoncherrie/2026-11/2026-11-05_04.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-05_04.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/740pWnv5JLDbSMtq' -o "maisoncherrie/2026-11/2026-11-05_05.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-05_05.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/4L5o0QMX6KBC2S3w' -o "maisoncherrie/2026-11/2026-11-05_06.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-05_06.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/cSlDyaXA63f3PnIY' -o "maisoncherrie/2026-11/2026-11-07_01.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-07_01.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/cIVNoSmIRKl28yx1' -o "maisoncherrie/2026-11/2026-11-07_02.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-07_02.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/LP9wazH0U5puwrZf' -o "maisoncherrie/2026-11/2026-11-07_03.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-07_03.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+      - name: Commit image assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add maisoncherrie/2026-11
+          git commit -m "Add MaisonCherrie November image assets"
+          git push
