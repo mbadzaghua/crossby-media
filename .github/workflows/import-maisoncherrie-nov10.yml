@@ -1,0 +1,36 @@
+name: Import MaisonCherrie November 10 images
+on:
+  push:
+    paths:
+      - '.github/workflows/import-maisoncherrie-nov10.yml'
+permissions:
+  contents: write
+jobs:
+  import-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download and verify five original PNG images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p maisoncherrie/2026-11
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/ANCxd2ZqVaSGEnW4' -o "maisoncherrie/2026-11/2026-11-10_pink-cases.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-10_pink-cases.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/W89QGA9Z4tO29BAa' -o "maisoncherrie/2026-11/2026-11-10_winter-nine-tile.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-10_winter-nine-tile.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/uZQGNggCjMB4O1d1' -o "maisoncherrie/2026-11/2026-11-10_winter-cozy-moodboard.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-10_winter-cozy-moodboard.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/2mJIe0LGdaaOZbGH' -o "maisoncherrie/2026-11/2026-11-10_winter-lace-moodboard.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-10_winter-lace-moodboard.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+          curl --fail --location --silent --show-error --max-time 120 'https://at.adobe.com/KHgwhjzDytTqAg1C' -o "maisoncherrie/2026-11/2026-11-10_winter-blush-moodboard.png"
+          python -c "import pathlib; p=pathlib.Path('maisoncherrie/2026-11/2026-11-10_winter-blush-moodboard.png'); assert p.read_bytes().startswith(bytes.fromhex('89504e470d0a1a0a')), f'Invalid PNG: {p.name}'"
+      - name: Commit MaisonCherrie image assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add maisoncherrie/2026-11
+          git commit -m "Add five MaisonCherrie November 10 images"
+          git push
